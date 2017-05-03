@@ -4,8 +4,7 @@ import time
 import pid
 
 logging.basicConfig(level=logging.DEBUG,
-                    format='[%(levelname)s] (%(threadName)-10s) %(message)s',
-                    )
+                    format='[%(levelname)s] (%(threadName)-10s) %(message)s',)
 
 def worker():
     logging.debug('Starting')
@@ -13,33 +12,26 @@ def worker():
     logging.debug('Exiting')
 
 
+# name, P, I, D, Derivator, Integrator, Integrator_max, Integrator_min, set_point,set_point_max, set_point_min 
+testpid = pid.PID_RP("test", 2.0, 0.0, 1.0, 0, 0, 20000, -20000, 0.0, 1000 -1000)
 
 
-state = [0, 0, 0, 1]
-
+# current state
+x = 0.01
 
 
 def main():
 	i = 0
-	while(1):
 
-		w = threading.Thread(name='worker', target=worker)
-		
-		if(state[3] == 1):
-			w.start()
+	#w = threading.Thread(name='worker', target=worker)
+	up = threading.Thread(name='pidupdate', target=pid.PID_RP.update, args=(testpid, x))
+	
+	while 1:
 
-		
-
-		if(i == 4):
-			state[3] = 1
-			i = 0
-
-		i = i + 1
-
-		time.sleep(2)
-		print(state)
-		time.sleep(1)
-
+		# restart thread if 
+		if(not up.isAlive()):
+			up = threading.Thread(name='pidupdate', target=pid.PID_RP.update, args=(testpid, x))
+			up.start()
 
 if __name__ == '__main__':
 	main()

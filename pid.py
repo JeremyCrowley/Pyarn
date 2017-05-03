@@ -1,4 +1,5 @@
 import time
+import logging
 
 
 class PID_RP:
@@ -9,8 +10,7 @@ class PID_RP:
     """
 
     def __init__(self, name="N/A", P=1.0, I=0.0, D=10.0, Derivator=0, Integrator=0, Integrator_max=20000,
-                 Integrator_min=-20000, set_point=0.0, power=1.0 ,set_point_max = 1000,set_point_min = -1000):
-        self._zmq = zmq_connection
+                 Integrator_min=-20000, set_point=0.0,set_point_max = 1000,set_point_min = -1000):
         self.Kp=P
         self.Ki=I
         self.Kd=D
@@ -35,6 +35,8 @@ class PID_RP:
 
         self.prev_t = 0
 
+        self.testtime = time.time()
+
     def reset_dt(self):
         self.prev_t = time.time()
 
@@ -42,6 +44,9 @@ class PID_RP:
     	"""
 		Update control input
     	"""
+
+        
+        logging.debug('Starting')
        
         self.e2 = self.e1
         self.e1 = self.e
@@ -58,6 +63,14 @@ class PID_RP:
 
         # Final control input returned by PID's.
         self.u = -1*((a1/a0)*(self.u1) + (a2/a0)*(self.u2)) + ((b0/a0)*self.e + (b1/a0)*self.e1 + (b2/a0)*self.e2)
+
+
+        #logging.debug(self.u)
+        curtime = time.time()
+        logging.debug(curtime - self.testtime)
+        self.testtime = curtime
+        
+        logging.debug('ending')
 
         return self.u
 

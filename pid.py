@@ -45,7 +45,6 @@ class PID_RP:
 		Update control input
     	"""
 
-        
         logging.debug('Starting')
        
         self.e2 = self.e1
@@ -65,11 +64,14 @@ class PID_RP:
         self.u = -1*((a1/a0)*(self.u1) + (a2/a0)*(self.u2)) + ((b0/a0)*self.e + (b1/a0)*self.e1 + (b2/a0)*self.e2)
 
 
-        #logging.debug(self.u)
-        curtime = time.time()
-        logging.debug(curtime - self.testtime)
-        self.testtime = curtime
         
+
+
+
+        #curtime = time.time()
+        #logging.debug(curtime - self.testtime)
+        #self.testtime = curtime
+        logging.debug(self.u)
         logging.debug('ending')
 
         return self.u

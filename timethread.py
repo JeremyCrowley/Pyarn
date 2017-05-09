@@ -29,24 +29,39 @@ class RepeatedTimer(object):
             self._timer.start()
             self.is_running = True
 
+    def updateArgs(self, *args):
+        self.args = args
+
     def stop(self):
         self._timer.cancel()
         self.is_running = False
 
+
+
 		
 # name, P, I, D, Derivator, Integrator, Integrator_max, Integrator_min, set_point,set_point_max, set_point_min 
-testpid = pid.PID_RP("test", 2.0, 0.0, 1.0, 0, 0, 20000, -20000, 0.0, 1000 -1000)
+testpid = pid.PID_RP("test", 2.0, 1.0, 0.0, 0, 0, 20000, -20000, 0.0, 1000 -1000)
 
 # test current state for pids
-x = 0.01
+projloc = [0,0,0]
+projvel = [1,1,1]
+
 
 # 8 milliseconds
-repeat = 0.008
+repeat = 0.1
 	
 
 if __name__ == '__main__':
 
-	rt = RepeatedTimer(repeat, pid.PID_RP.update, testpid, x) 
+    rt = RepeatedTimer(repeat, pid.PID_RP.update, testpid, projloc[0]) 
+
+    while(1):
+
+        time.sleep(4)
+
+        projloc[0] = projloc[0] + 1
+        rt.updateArgs(testpid, projloc[0])
+
 	
 
 

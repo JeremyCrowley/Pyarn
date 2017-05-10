@@ -15,10 +15,8 @@ def worker():
 # name, P, I, D, Derivator, Integrator, Integrator_max, Integrator_min, set_point,set_point_max, set_point_min 
 testpid = pid.PID_RP("test", 2.0, 0.0, 1.0, 0, 0, 20000, -20000, 0.0, 1000 -1000)
 
-
 # current state
 x = 0.01
-
 
 def main():
 	i = 0

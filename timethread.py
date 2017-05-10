@@ -53,31 +53,27 @@ ts = 0.1
 
 if __name__ == '__main__':
 
+    # create objects for the repeating threads for pids
     rollThread = RepeatedTimer(ts, pid.PID_RP.update, roll, projloc[0]) 
     #pitchThread = RepeatedTimer(ts, pid.PID_RP.update, pitch, projloc[1]) 
 
     roll.set_point_to(projtarget[0])
     #pitch.set_point_to(projtarget[1])
 
-
     while(1):
-
         
+        # add to the location of the quad (simulate movement)
         for i in range(0,40):
+
+            # roll pid
             projloc[0] = projloc[0] + 0.025
             rollThread.updateArgs(roll, projloc[0])
 
+            # pitch pid
             #projloc[1] = projloc[1] + 0.025
             #pitchThread.updateArgs(pitch, projloc[1])
 
             time.sleep(0.1)
-
-        
-        
-
-
-
-	
 
 
 

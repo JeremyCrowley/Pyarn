@@ -40,11 +40,13 @@ class RepeatedTimer(object):
 
 		
 # name, P, I, D, Derivator, Integrator, Integrator_max, Integrator_min, set_point,set_point_max, set_point_min 
-testpid = pid.PID_RP("test", 2.0, 1.0, 0.0, 0, 0, 20000, -20000, 0.0, 1000 -1000)
+roll = pid.PID_RP("test", 2.0, 1.0, 0.0, 0, 0, 20000, -20000, 1.0, 1000 -1000)
 
 # test current state for pids
 projloc = [0,0,0]
 projvel = [1,1,1]
+
+projtarget = [1,0,0]
 
 
 # 8 milliseconds
@@ -53,14 +55,24 @@ repeat = 0.1
 
 if __name__ == '__main__':
 
-    rt = RepeatedTimer(repeat, pid.PID_RP.update, testpid, projloc[0]) 
+    rt = RepeatedTimer(repeat, pid.PID_RP.update, roll, projloc[0]) 
+
+    roll.set_point_to(projtarget[0])
 
     while(1):
 
-        time.sleep(4)
+        
+        
 
-        projloc[0] = projloc[0] + 1
-        rt.updateArgs(testpid, projloc[0])
+        for i in range(0,40):
+            projloc[0] = projloc[0] + 0.025
+            rt.updateArgs(roll, projloc[0])
+            time.sleep(0.1)
+
+        
+        
+
+
 
 	
 

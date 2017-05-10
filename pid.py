@@ -10,7 +10,7 @@ class PID_RP:
     """
 
     def __init__(self, name="N/A", P=1.0, I=0.0, D=10.0, Derivator=0, Integrator=0, Integrator_max=20000,
-                 Integrator_min=-20000, set_point=1.0,set_point_max=1000,set_point_min=-1000):
+                 Integrator_min=-20000, set_point=0.0,set_point_max=1000,set_point_min=-1000):
         self.Kp=P
         self.Ki=I
         self.Kd=D
@@ -19,10 +19,9 @@ class PID_RP:
         self.set_point_min = set_point_min
         self.set_point=set_point
 
-
-        logging.debug("************")
+        logging.debug("In " + self.name + " init")
         logging.debug(self.set_point)
-        logging.debug("************")
+        logging.debug("End " + self.name + " init")
 
         #e,e1,e2 are e[k], e[k-1], e[k-2] from the difference equation. 
         self.e = 0
@@ -50,8 +49,6 @@ class PID_RP:
 		Update control input
     	"""
 
-        
-       
         self.e2 = self.e1
         self.e1 = self.e
         self.e = self.set_point - currentState
@@ -68,19 +65,11 @@ class PID_RP:
         # Final control input returned by PID's.
         self.u = -1*((a1/a0)*(self.u1) + (a2/a0)*(self.u2)) + ((b0/a0)*self.e + (b1/a0)*self.e1 + (b2/a0)*self.e2)
 
-
-        
-
-
-
-        #curtime = time.time()
-        #logging.debug(curtime - self.testtime)
-        #self.testtime = curtime
-        logging.debug("start")
+        logging.debug("In " + self.name + " pid thread")
         logging.debug(currentState)
         logging.debug(self.set_point)
         logging.debug(self.u)
-        logging.debug("end")
+        logging.debug("In " + self.name + " pid thread")
 
         return self.u
 
@@ -95,19 +84,3 @@ class PID_RP:
             self.set_point = self.set_point_min
             return
         self.set_point = set_point
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
